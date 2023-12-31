@@ -1,4 +1,7 @@
 {
+  "annotations": {
+    "changelogDate": "20231207035852"
+  },
   "applications": "*",
   "changelogDate": "20231207035852",
   "documentation": "not an ignored comment",

@@ -1,4 +1,7 @@
 {
+  "annotations": {
+    "changelogDate": "20231207035652"
+  },
   "applications": "*",
   "changelogDate": "20231207035652",
   "entityTableName": "region",

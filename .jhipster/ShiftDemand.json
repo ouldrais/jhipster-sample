@@ -1,0 +1,16 @@
+{
+  "annotations": {
+    "changelogDate": "20231207040552"
+  },
+  "applications": "*",
+  "entityTableName": "shift_demand",
+  "fields": [
+    {
+      "fieldName": "count",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "ShiftDemand",
+  "relationships": [],
+  "searchEngine": "no"
+}

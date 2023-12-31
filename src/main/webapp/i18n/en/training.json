@@ -1,0 +1,27 @@
+{
+  "jhipsterSampleApp": {
+    "training": {
+      "home": {
+        "title": "Trainings",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Training",
+        "createOrEditLabel": "Create or edit a Training",
+        "notFound": "No Trainings found"
+      },
+      "created": "A new Training is created with identifier {{ param }}",
+      "updated": "A Training is updated with identifier {{ param }}",
+      "deleted": "A Training is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Training {{ id }}?"
+      },
+      "detail": {
+        "title": "Training"
+      },
+      "key": "Key",
+      "id": "Id",
+      "description": "Description",
+      "positionRequirement": "Position Requirement",
+      "resourceTraining": "Resource Training"
+    }
+  }
+}

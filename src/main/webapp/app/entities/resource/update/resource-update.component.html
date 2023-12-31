@@ -1,0 +1,106 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-resource-heading" data-cy="ResourceCreateUpdateHeading" jhiTranslate="jhipsterSampleApp.resource.home.createOrEditLabel">
+        Create or edit a Resource
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.key" for="field_key">Key</label>
+          <input type="number" class="form-control" name="key" id="field_key" data-cy="key" formControlName="key" />
+        </div>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.id" for="field_id">Id</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.firstName" for="field_firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.lastName" for="field_lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.teamRole" for="field_teamRole">Team Role</label>
+          <input type="text" class="form-control" name="teamRole" id="field_teamRole" data-cy="teamRole" formControlName="teamRole" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.exchangeAllowed" for="field_exchangeAllowed"
+            >Exchange Allowed</label
+          >
+          <input
+            type="checkbox"
+            class="form-check"
+            name="exchangeAllowed"
+            id="field_exchangeAllowed"
+            data-cy="exchangeAllowed"
+            formControlName="exchangeAllowed"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.resourceTraining" for="field_resourceTraining"
+            >Resource Training</label
+          >
+          <select
+            class="form-control"
+            id="field_resourceTraining"
+            data-cy="resourceTraining"
+            name="resourceTraining"
+            formControlName="resourceTraining"
+            [compareWith]="compareResourceTraining"
+          >
+            <option [ngValue]="null"></option>
+            @for (resourceTrainingOption of resourceTrainingsCollection; track $index) {
+              <option [ngValue]="resourceTrainingOption">{{ resourceTrainingOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.resource.resourcePlan" for="field_resourcePlan">Resource Plan</label>
+          <select
+            class="form-control"
+            id="field_resourcePlan"
+            data-cy="resourcePlan"
+            name="resourcePlan"
+            formControlName="resourcePlan"
+            [compareWith]="compareResourcePlan"
+          >
+            <option [ngValue]="null"></option>
+            @for (resourcePlanOption of resourcePlansCollection; track $index) {
+              <option [ngValue]="resourcePlanOption">{{ resourcePlanOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,14 +1,12 @@
 package com.mycompany.myapp.domain;
 
 import static com.mycompany.myapp.domain.DepartmentTestSamples.*;
-import static com.mycompany.myapp.domain.EmployeeTestSamples.*;
 import static com.mycompany.myapp.domain.JobHistoryTestSamples.*;
-import static com.mycompany.myapp.domain.LocationTestSamples.*;
+import static com.mycompany.myapp.domain.PositionTestSamples.*;
+import static com.mycompany.myapp.domain.ShiftDemandTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.mycompany.myapp.web.rest.TestUtil;
-import java.util.HashSet;
-import java.util.Set;
 import org.junit.jupiter.api.Test;
 
 class DepartmentTest {
@@ -28,37 +26,27 @@ class DepartmentTest {
     }
 
     @Test
-    void locationTest() throws Exception {
+    void positionTest() throws Exception {
         Department department = getDepartmentRandomSampleGenerator();
-        Location locationBack = getLocationRandomSampleGenerator();
+        Position positionBack = getPositionRandomSampleGenerator();
 
-        department.setLocation(locationBack);
-        assertThat(department.getLocation()).isEqualTo(locationBack);
+        department.setPosition(positionBack);
+        assertThat(department.getPosition()).isEqualTo(positionBack);
 
-        department.location(null);
-        assertThat(department.getLocation()).isNull();
+        department.position(null);
+        assertThat(department.getPosition()).isNull();
     }
 
     @Test
-    void employeeTest() throws Exception {
+    void shiftDemandTest() throws Exception {
         Department department = getDepartmentRandomSampleGenerator();
-        Employee employeeBack = getEmployeeRandomSampleGenerator();
+        ShiftDemand shiftDemandBack = getShiftDemandRandomSampleGenerator();
 
-        department.addEmployee(employeeBack);
-        assertThat(department.getEmployees()).containsOnly(employeeBack);
-        assertThat(employeeBack.getDepartment()).isEqualTo(department);
+        department.setShiftDemand(shiftDemandBack);
+        assertThat(department.getShiftDemand()).isEqualTo(shiftDemandBack);
 
-        department.removeEmployee(employeeBack);
-        assertThat(department.getEmployees()).doesNotContain(employeeBack);
-        assertThat(employeeBack.getDepartment()).isNull();
-
-        department.employees(new HashSet<>(Set.of(employeeBack)));
-        assertThat(department.getEmployees()).containsOnly(employeeBack);
-        assertThat(employeeBack.getDepartment()).isEqualTo(department);
-
-        department.setEmployees(new HashSet<>());
-        assertThat(department.getEmployees()).doesNotContain(employeeBack);
-        assertThat(employeeBack.getDepartment()).isNull();
+        department.shiftDemand(null);
+        assertThat(department.getShiftDemand()).isNull();
     }
 
     @Test

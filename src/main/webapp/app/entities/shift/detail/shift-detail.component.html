@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (shift) {
+      <div>
+        <h2 data-cy="shiftDetailsHeading"><span jhiTranslate="jhipsterSampleApp.shift.detail.title">Shift</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ shift.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.key">Key</span></dt>
+          <dd>
+            <span>{{ shift.key }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.shiftStart">Shift Start</span></dt>
+          <dd>
+            <span>{{ shift.shiftStart | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.shiftEnd">Shift End</span></dt>
+          <dd>
+            <span>{{ shift.shiftEnd | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.type">Type</span></dt>
+          <dd>
+            <span>{{ shift.type }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.teamPlan">Team Plan</span></dt>
+          <dd>
+            @if (shift.teamPlan) {
+              <div>
+                <a [routerLink]="['/team-plan', shift.teamPlan.id, 'view']">{{ shift.teamPlan.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.shiftDemand">Shift Demand</span></dt>
+          <dd>
+            @if (shift.shiftDemand) {
+              <div>
+                <a [routerLink]="['/shift-demand', shift.shiftDemand.id, 'view']">{{ shift.shiftDemand.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.shift.resourcePlan">Resource Plan</span></dt>
+          <dd>
+            @if (shift.resourcePlan) {
+              <div>
+                <a [routerLink]="['/resource-plan', shift.resourcePlan.id, 'view']">{{ shift.resourcePlan.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/shift', shift.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

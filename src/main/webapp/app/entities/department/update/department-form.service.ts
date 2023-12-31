@@ -17,9 +17,11 @@ type DepartmentFormGroupInput = IDepartment | PartialWithRequiredKeyOf<NewDepart
 type DepartmentFormDefaults = Pick<NewDepartment, 'id'>;
 
 type DepartmentFormGroupContent = {
+  key: FormControl<IDepartment['key']>;
   id: FormControl<IDepartment['id'] | NewDepartment['id']>;
-  departmentName: FormControl<IDepartment['departmentName']>;
-  location: FormControl<IDepartment['location']>;
+  team: FormControl<IDepartment['team']>;
+  position: FormControl<IDepartment['position']>;
+  shiftDemand: FormControl<IDepartment['shiftDemand']>;
 };
 
 export type DepartmentFormGroup = FormGroup<DepartmentFormGroupContent>;
@@ -32,6 +34,7 @@ export class DepartmentFormService {
       ...department,
     };
     return new FormGroup<DepartmentFormGroupContent>({
+      key: new FormControl(departmentRawValue.key),
       id: new FormControl(
         { value: departmentRawValue.id, disabled: true },
         {
@@ -39,10 +42,9 @@ export class DepartmentFormService {
           validators: [Validators.required],
         },
       ),
-      departmentName: new FormControl(departmentRawValue.departmentName, {
-        validators: [Validators.required],
-      }),
-      location: new FormControl(departmentRawValue.location),
+      team: new FormControl(departmentRawValue.team),
+      position: new FormControl(departmentRawValue.position),
+      shiftDemand: new FormControl(departmentRawValue.shiftDemand),
     });
   }
 

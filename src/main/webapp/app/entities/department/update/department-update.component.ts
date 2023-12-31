@@ -7,10 +7,12 @@ import { finalize, map } from 'rxjs/operators';
 import SharedModule from 'app/shared/shared.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ILocation } from 'app/entities/location/location.model';
-import { LocationService } from 'app/entities/location/service/location.service';
-import { IDepartment } from '../department.model';
+import { IPosition } from 'app/entities/position/position.model';
+import { PositionService } from 'app/entities/position/service/position.service';
+import { IShiftDemand } from 'app/entities/shift-demand/shift-demand.model';
+import { ShiftDemandService } from 'app/entities/shift-demand/service/shift-demand.service';
 import { DepartmentService } from '../service/department.service';
+import { IDepartment } from '../department.model';
 import { DepartmentFormService, DepartmentFormGroup } from './department-form.service';
 
 @Component({
@@ -23,18 +25,22 @@ export class DepartmentUpdateComponent implements OnInit {
   isSaving = false;
   department: IDepartment | null = null;
 
-  locationsCollection: ILocation[] = [];
+  positionsCollection: IPosition[] = [];
+  shiftDemandsCollection: IShiftDemand[] = [];
 
   editForm: DepartmentFormGroup = this.departmentFormService.createDepartmentFormGroup();
 
   constructor(
     protected departmentService: DepartmentService,
     protected departmentFormService: DepartmentFormService,
-    protected locationService: LocationService,
+    protected positionService: PositionService,
+    protected shiftDemandService: ShiftDemandService,
     protected activatedRoute: ActivatedRoute,
   ) {}
 
-  compareLocation = (o1: ILocation | null, o2: ILocation | null): boolean => this.locationService.compareLocation(o1, o2);
+  comparePosition = (o1: IPosition | null, o2: IPosition | null): boolean => this.positionService.comparePosition(o1, o2);
+
+  compareShiftDemand = (o1: IShiftDemand | null, o2: IShiftDemand | null): boolean => this.shiftDemandService.compareShiftDemand(o1, o2);
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ department }) => {
@@ -84,21 +90,35 @@ export class DepartmentUpdateComponent implements OnInit {
     this.department = department;
     this.departmentFormService.resetForm(this.editForm, department);
 
-    this.locationsCollection = this.locationService.addLocationToCollectionIfMissing<ILocation>(
-      this.locationsCollection,
-      department.location,
+    this.positionsCollection = this.positionService.addPositionToCollectionIfMissing<IPosition>(
+      this.positionsCollection,
+      department.position,
+    );
+    this.shiftDemandsCollection = this.shiftDemandService.addShiftDemandToCollectionIfMissing<IShiftDemand>(
+      this.shiftDemandsCollection,
+      department.shiftDemand,
     );
   }
 
   protected loadRelationshipsOptions(): void {
-    this.locationService
+    this.positionService
       .query({ filter: 'department-is-null' })
-      .pipe(map((res: HttpResponse<ILocation[]>) => res.body ?? []))
+      .pipe(map((res: HttpResponse<IPosition[]>) => res.body ?? []))
       .pipe(
-        map((locations: ILocation[]) =>
-          this.locationService.addLocationToCollectionIfMissing<ILocation>(locations, this.department?.location),
+        map((positions: IPosition[]) =>
+          this.positionService.addPositionToCollectionIfMissing<IPosition>(positions, this.department?.position),
         ),
       )
-      .subscribe((locations: ILocation[]) => (this.locationsCollection = locations));
+      .subscribe((positions: IPosition[]) => (this.positionsCollection = positions));
+
+    this.shiftDemandService
+      .query({ filter: 'department-is-null' })
+      .pipe(map((res: HttpResponse<IShiftDemand[]>) => res.body ?? []))
+      .pipe(
+        map((shiftDemands: IShiftDemand[]) =>
+          this.shiftDemandService.addShiftDemandToCollectionIfMissing<IShiftDemand>(shiftDemands, this.department?.shiftDemand),
+        ),
+      )
+      .subscribe((shiftDemands: IShiftDemand[]) => (this.shiftDemandsCollection = shiftDemands));
   }
 }

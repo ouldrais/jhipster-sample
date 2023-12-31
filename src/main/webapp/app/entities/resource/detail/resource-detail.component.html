@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (resource) {
+      <div>
+        <h2 data-cy="resourceDetailsHeading"><span jhiTranslate="jhipsterSampleApp.resource.detail.title">Resource</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.key">Key</span></dt>
+          <dd>
+            <span>{{ resource.key }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.id">Id</span></dt>
+          <dd>
+            <span>{{ resource.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.firstName">First Name</span></dt>
+          <dd>
+            <span>{{ resource.firstName }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.lastName">Last Name</span></dt>
+          <dd>
+            <span>{{ resource.lastName }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.teamRole">Team Role</span></dt>
+          <dd>
+            <span>{{ resource.teamRole }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.exchangeAllowed">Exchange Allowed</span></dt>
+          <dd>
+            <span>{{ resource.exchangeAllowed }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.resourceTraining">Resource Training</span></dt>
+          <dd>
+            @if (resource.resourceTraining) {
+              <div>
+                <a [routerLink]="['/resource-training', resource.resourceTraining.id, 'view']">{{ resource.resourceTraining.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.resource.resourcePlan">Resource Plan</span></dt>
+          <dd>
+            @if (resource.resourcePlan) {
+              <div>
+                <a [routerLink]="['/resource-plan', resource.resourcePlan.id, 'view']">{{ resource.resourcePlan.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/resource', resource.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,37 @@
+{
+  "annotations": {
+    "changelogDate": "20231207040352"
+  },
+  "applications": "*",
+  "entityTableName": "position",
+  "fields": [
+    {
+      "fieldName": "key",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "leadership",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Position",
+  "relationships": [
+    {
+      "otherEntityName": "positionRequirement",
+      "relationshipName": "positionRequirement",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "resourcePlan",
+      "relationshipName": "resourcePlan",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

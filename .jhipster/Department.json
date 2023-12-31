@@ -1,31 +1,38 @@
 {
+  "annotations": {
+    "changelogDate": "20231207035952"
+  },
   "applications": "*",
   "changelogDate": "20231207035952",
   "entityTableName": "department",
   "fields": [
     {
-      "fieldName": "departmentName",
-      "fieldType": "String",
-      "fieldValidateRules": ["required"]
+      "fieldName": "key",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "team",
+      "fieldType": "String"
     }
   ],
   "name": "Department",
   "relationships": [
     {
-      "otherEntityName": "location",
-      "relationshipName": "location",
+      "otherEntityName": "position",
+      "relationshipName": "position",
       "relationshipSide": "left",
       "relationshipType": "one-to-one"
     },
     {
-      "documentation": "A relationship",
-      "otherEntityName": "employee",
-      "otherEntityRelationshipName": "department",
-      "relationshipName": "employee",
+      "otherEntityName": "shiftDemand",
+      "relationshipName": "shiftDemand",
       "relationshipSide": "left",
-      "relationshipType": "one-to-many"
+      "relationshipType": "one-to-one"
     }
   ],
-  "searchEngine": "no",
-  "service": "serviceImpl"
+  "searchEngine": "no"
 }

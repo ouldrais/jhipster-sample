@@ -6,10 +6,12 @@ import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { of, Subject, from } from 'rxjs';
 
-import { ILocation } from 'app/entities/location/location.model';
-import { LocationService } from 'app/entities/location/service/location.service';
-import { DepartmentService } from '../service/department.service';
+import { IPosition } from 'app/entities/position/position.model';
+import { PositionService } from 'app/entities/position/service/position.service';
+import { IShiftDemand } from 'app/entities/shift-demand/shift-demand.model';
+import { ShiftDemandService } from 'app/entities/shift-demand/service/shift-demand.service';
 import { IDepartment } from '../department.model';
+import { DepartmentService } from '../service/department.service';
 import { DepartmentFormService } from './department-form.service';
 
 import { DepartmentUpdateComponent } from './department-update.component';
@@ -20,7 +22,8 @@ describe('Department Management Update Component', () => {
   let activatedRoute: ActivatedRoute;
   let departmentFormService: DepartmentFormService;
   let departmentService: DepartmentService;
-  let locationService: LocationService;
+  let positionService: PositionService;
+  let shiftDemandService: ShiftDemandService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -42,39 +45,61 @@ describe('Department Management Update Component', () => {
     activatedRoute = TestBed.inject(ActivatedRoute);
     departmentFormService = TestBed.inject(DepartmentFormService);
     departmentService = TestBed.inject(DepartmentService);
-    locationService = TestBed.inject(LocationService);
+    positionService = TestBed.inject(PositionService);
+    shiftDemandService = TestBed.inject(ShiftDemandService);
 
     comp = fixture.componentInstance;
   });
 
   describe('ngOnInit', () => {
-    it('Should call location query and add missing value', () => {
+    it('Should call position query and add missing value', () => {
       const department: IDepartment = { id: 456 };
-      const location: ILocation = { id: 11685 };
-      department.location = location;
+      const position: IPosition = { id: 24466 };
+      department.position = position;
 
-      const locationCollection: ILocation[] = [{ id: 25390 }];
-      jest.spyOn(locationService, 'query').mockReturnValue(of(new HttpResponse({ body: locationCollection })));
-      const expectedCollection: ILocation[] = [location, ...locationCollection];
-      jest.spyOn(locationService, 'addLocationToCollectionIfMissing').mockReturnValue(expectedCollection);
+      const positionCollection: IPosition[] = [{ id: 12034 }];
+      jest.spyOn(positionService, 'query').mockReturnValue(of(new HttpResponse({ body: positionCollection })));
+      const expectedCollection: IPosition[] = [position, ...positionCollection];
+      jest.spyOn(positionService, 'addPositionToCollectionIfMissing').mockReturnValue(expectedCollection);
 
       activatedRoute.data = of({ department });
       comp.ngOnInit();
 
-      expect(locationService.query).toHaveBeenCalled();
-      expect(locationService.addLocationToCollectionIfMissing).toHaveBeenCalledWith(locationCollection, location);
-      expect(comp.locationsCollection).toEqual(expectedCollection);
+      expect(positionService.query).toHaveBeenCalled();
+      expect(positionService.addPositionToCollectionIfMissing).toHaveBeenCalledWith(positionCollection, position);
+      expect(comp.positionsCollection).toEqual(expectedCollection);
+    });
+
+    it('Should call shiftDemand query and add missing value', () => {
+      const department: IDepartment = { id: 456 };
+      const shiftDemand: IShiftDemand = { id: 5103 };
+      department.shiftDemand = shiftDemand;
+
+      const shiftDemandCollection: IShiftDemand[] = [{ id: 28470 }];
+      jest.spyOn(shiftDemandService, 'query').mockReturnValue(of(new HttpResponse({ body: shiftDemandCollection })));
+      const expectedCollection: IShiftDemand[] = [shiftDemand, ...shiftDemandCollection];
+      jest.spyOn(shiftDemandService, 'addShiftDemandToCollectionIfMissing').mockReturnValue(expectedCollection);
+
+      activatedRoute.data = of({ department });
+      comp.ngOnInit();
+
+      expect(shiftDemandService.query).toHaveBeenCalled();
+      expect(shiftDemandService.addShiftDemandToCollectionIfMissing).toHaveBeenCalledWith(shiftDemandCollection, shiftDemand);
+      expect(comp.shiftDemandsCollection).toEqual(expectedCollection);
     });
 
     it('Should update editForm', () => {
       const department: IDepartment = { id: 456 };
-      const location: ILocation = { id: 32630 };
-      department.location = location;
+      const position: IPosition = { id: 24191 };
+      department.position = position;
+      const shiftDemand: IShiftDemand = { id: 6408 };
+      department.shiftDemand = shiftDemand;
 
       activatedRoute.data = of({ department });
       comp.ngOnInit();
 
-      expect(comp.locationsCollection).toContain(location);
+      expect(comp.positionsCollection).toContain(position);
+      expect(comp.shiftDemandsCollection).toContain(shiftDemand);
       expect(comp.department).toEqual(department);
     });
   });
@@ -148,13 +173,23 @@ describe('Department Management Update Component', () => {
   });
 
   describe('Compare relationships', () => {
-    describe('compareLocation', () => {
-      it('Should forward to locationService', () => {
+    describe('comparePosition', () => {
+      it('Should forward to positionService', () => {
         const entity = { id: 123 };
         const entity2 = { id: 456 };
-        jest.spyOn(locationService, 'compareLocation');
-        comp.compareLocation(entity, entity2);
-        expect(locationService.compareLocation).toHaveBeenCalledWith(entity, entity2);
+        jest.spyOn(positionService, 'comparePosition');
+        comp.comparePosition(entity, entity2);
+        expect(positionService.comparePosition).toHaveBeenCalledWith(entity, entity2);
+      });
+    });
+
+    describe('compareShiftDemand', () => {
+      it('Should forward to shiftDemandService', () => {
+        const entity = { id: 123 };
+        const entity2 = { id: 456 };
+        jest.spyOn(shiftDemandService, 'compareShiftDemand');
+        comp.compareShiftDemand(entity, entity2);
+        expect(shiftDemandService.compareShiftDemand).toHaveBeenCalledWith(entity, entity2);
       });
     });
   });

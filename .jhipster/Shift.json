@@ -1,0 +1,47 @@
+{
+  "annotations": {
+    "changelogDate": "20231207040452"
+  },
+  "applications": "*",
+  "entityTableName": "shift",
+  "fields": [
+    {
+      "fieldName": "key",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "shiftStart",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "shiftEnd",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "type",
+      "fieldType": "String"
+    }
+  ],
+  "name": "Shift",
+  "relationships": [
+    {
+      "otherEntityName": "teamPlan",
+      "relationshipName": "teamPlan",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "shiftDemand",
+      "relationshipName": "shiftDemand",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "resourcePlan",
+      "relationshipName": "resourcePlan",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

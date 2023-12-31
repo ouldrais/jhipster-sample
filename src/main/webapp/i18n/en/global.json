@@ -8,14 +8,18 @@
       "entities": {
         "main": "Entities",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)",
-        "region": "Region",
-        "country": "Country",
-        "location": "Location",
+        "team": "Team",
+        "teamPlan": "Team Plan",
+        "resource": "Resource",
         "department": "Department",
-        "task": "Task",
-        "employee": "Employee",
-        "job": "Job",
-        "jobHistory": "Job History"
+        "resourcePlan": "Resource Plan",
+        "resourceTraining": "Resource Training",
+        "training": "Training",
+        "positionRequirement": "Position Requirement",
+        "position": "Position",
+        "shift": "Shift",
+        "shiftDemand": "Shift Demand",
+        "shiftTemplate": "Shift Template"
       },
       "account": {
         "main": "Account",
