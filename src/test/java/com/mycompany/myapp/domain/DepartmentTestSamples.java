@@ -10,14 +10,14 @@ public class DepartmentTestSamples {
     private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2 * Integer.MAX_VALUE));
 
     public static Department getDepartmentSample1() {
-        return new Department().id(1L).departmentName("departmentName1");
+        return new Department().key(1L).id(1L).team("team1");
     }
 
     public static Department getDepartmentSample2() {
-        return new Department().id(2L).departmentName("departmentName2");
+        return new Department().key(2L).id(2L).team("team2");
     }
 
     public static Department getDepartmentRandomSampleGenerator() {
-        return new Department().id(longCount.incrementAndGet()).departmentName(UUID.randomUUID().toString());
+        return new Department().key(longCount.incrementAndGet()).id(longCount.incrementAndGet()).team(UUID.randomUUID().toString());
     }
 }

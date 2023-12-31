@@ -8,11 +8,18 @@
     -->
     <changeSet id="20231207035952-2" author="jhipster">
 
-        <addForeignKeyConstraint baseColumnNames="location_id"
+        <addForeignKeyConstraint baseColumnNames="position_id"
                                  baseTableName="department"
-                                 constraintName="fk_department__location_id"
+                                 constraintName="fk_department__position_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="location"
+                                 referencedTableName="position"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="shift_demand_id"
+                                 baseTableName="department"
+                                 constraintName="fk_department__shift_demand_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="shift_demand"
                                  />
     </changeSet>
 </databaseChangeLog>

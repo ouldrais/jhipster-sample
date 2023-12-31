@@ -17,10 +17,11 @@
       "detail": {
         "title": "Department"
       },
-      "id": "ID",
-      "departmentName": "Department Name",
-      "location": "Location",
-      "employee": "Employee",
+      "key": "Key",
+      "id": "Id",
+      "team": "Team",
+      "position": "Position",
+      "shiftDemand": "Shift Demand",
       "jobHistory": "Job History"
     }
   }

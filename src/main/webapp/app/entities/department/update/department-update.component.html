@@ -12,49 +12,54 @@
       <div>
         <jhi-alert-error></jhi-alert-error>
 
-        <div class="mb-3" *ngIf="editForm.controls.id.value !== null">
-          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
-          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.key" for="field_key">Key</label>
+          <input type="number" class="form-control" name="key" id="field_key" data-cy="key" formControlName="key" />
         </div>
 
-        <div class="mb-3">
-          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.departmentName" for="field_departmentName"
-            >Department Name</label
-          >
-          <input
-            type="text"
-            class="form-control"
-            name="departmentName"
-            id="field_departmentName"
-            data-cy="departmentName"
-            formControlName="departmentName"
-          />
-          <div
-            *ngIf="
-              editForm.get('departmentName')!.invalid && (editForm.get('departmentName')!.dirty || editForm.get('departmentName')!.touched)
-            "
-          >
-            <small
-              class="form-text text-danger"
-              *ngIf="editForm.get('departmentName')?.errors?.required"
-              jhiTranslate="entity.validation.required"
-              >This field is required.</small
-            >
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="jhipsterSampleApp.department.id" for="field_id">Id</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
           </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.team" for="field_team">Team</label>
+          <input type="text" class="form-control" name="team" id="field_team" data-cy="team" formControlName="team" />
         </div>
 
         <div class="mb-3">
-          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.location" for="field_location">Location</label>
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.position" for="field_position">Position</label>
           <select
             class="form-control"
-            id="field_location"
-            data-cy="location"
-            name="location"
-            formControlName="location"
-            [compareWith]="compareLocation"
+            id="field_position"
+            data-cy="position"
+            name="position"
+            formControlName="position"
+            [compareWith]="comparePosition"
           >
             <option [ngValue]="null"></option>
-            <option [ngValue]="locationOption" *ngFor="let locationOption of locationsCollection">{{ locationOption.id }}</option>
+            @for (positionOption of positionsCollection; track $index) {
+              <option [ngValue]="positionOption">{{ positionOption.id }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="jhipsterSampleApp.department.shiftDemand" for="field_shiftDemand">Shift Demand</label>
+          <select
+            class="form-control"
+            id="field_shiftDemand"
+            data-cy="shiftDemand"
+            name="shiftDemand"
+            formControlName="shiftDemand"
+            [compareWith]="compareShiftDemand"
+          >
+            <option [ngValue]="null"></option>
+            @for (shiftDemandOption of shiftDemandsCollection; track $index) {
+              <option [ngValue]="shiftDemandOption">{{ shiftDemandOption.id }}</option>
+            }
           </select>
         </div>
       </div>

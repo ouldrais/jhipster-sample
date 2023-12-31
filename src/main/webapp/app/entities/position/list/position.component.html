@@ -1,0 +1,122 @@
+<div>
+  <h2 id="page-heading" data-cy="PositionHeading">
+    <span jhiTranslate="jhipsterSampleApp.position.home.title">Positions</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="jhipsterSampleApp.position.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-position"
+        [routerLink]="['/position/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="jhipsterSampleApp.position.home.createLabel">Create a new Position</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (positions?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="jhipsterSampleApp.position.home.notFound">No Positions found</span>
+    </div>
+  }
+
+  @if (positions && positions.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="key">
+              <div class="d-flex">
+                <span jhiTranslate="jhipsterSampleApp.position.key">Key</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="jhipsterSampleApp.position.id">Id</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="leadership">
+              <div class="d-flex">
+                <span jhiTranslate="jhipsterSampleApp.position.leadership">Leadership</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="positionRequirement.id">
+              <div class="d-flex">
+                <span jhiTranslate="jhipsterSampleApp.position.positionRequirement">Position Requirement</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="resourcePlan.id">
+              <div class="d-flex">
+                <span jhiTranslate="jhipsterSampleApp.position.resourcePlan">Resource Plan</span>
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (position of positions; track trackId) {
+            <tr data-cy="entityTable">
+              <td>{{ position.key }}</td>
+              <td>
+                <a [routerLink]="['/position', position.id, 'view']">{{ position.id }}</a>
+              </td>
+              <td>{{ position.leadership }}</td>
+              <td>
+                @if (position.positionRequirement) {
+                  <div>
+                    <a [routerLink]="['/position-requirement', position.positionRequirement.id, 'view']">{{
+                      position.positionRequirement.id
+                    }}</a>
+                  </div>
+                }
+              </td>
+              <td>
+                @if (position.resourcePlan) {
+                  <div>
+                    <a [routerLink]="['/resource-plan', position.resourcePlan.id, 'view']">{{ position.resourcePlan.id }}</a>
+                  </div>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/position', position.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/position', position.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(position)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

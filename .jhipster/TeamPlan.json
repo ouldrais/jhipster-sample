@@ -1,0 +1,16 @@
+{
+  "annotations": {
+    "changelogDate": "20231207035752"
+  },
+  "applications": "*",
+  "entityTableName": "team_plan",
+  "fields": [
+    {
+      "fieldName": "availability",
+      "fieldType": "Boolean"
+    }
+  ],
+  "name": "TeamPlan",
+  "relationships": [],
+  "searchEngine": "no"
+}

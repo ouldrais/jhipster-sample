@@ -29,8 +29,11 @@ import org.springframework.transaction.annotation.Transactional;
 @WithMockUser
 class DepartmentResourceIT {
 
-    private static final String DEFAULT_DEPARTMENT_NAME = "AAAAAAAAAA";
-    private static final String UPDATED_DEPARTMENT_NAME = "BBBBBBBBBB";
+    private static final Long DEFAULT_KEY = 1L;
+    private static final Long UPDATED_KEY = 2L;
+
+    private static final String DEFAULT_TEAM = "AAAAAAAAAA";
+    private static final String UPDATED_TEAM = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/departments";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -56,7 +59,7 @@ class DepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Department createEntity(EntityManager em) {
-        Department department = new Department().departmentName(DEFAULT_DEPARTMENT_NAME);
+        Department department = new Department().key(DEFAULT_KEY).team(DEFAULT_TEAM);
         return department;
     }
 
@@ -67,7 +70,7 @@ class DepartmentResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Department createUpdatedEntity(EntityManager em) {
-        Department department = new Department().departmentName(UPDATED_DEPARTMENT_NAME);
+        Department department = new Department().key(UPDATED_KEY).team(UPDATED_TEAM);
         return department;
     }
 
@@ -89,7 +92,8 @@ class DepartmentResourceIT {
         List<Department> departmentList = departmentRepository.findAll();
         assertThat(departmentList).hasSize(databaseSizeBeforeCreate + 1);
         Department testDepartment = departmentList.get(departmentList.size() - 1);
-        assertThat(testDepartment.getDepartmentName()).isEqualTo(DEFAULT_DEPARTMENT_NAME);
+        assertThat(testDepartment.getKey()).isEqualTo(DEFAULT_KEY);
+        assertThat(testDepartment.getTeam()).isEqualTo(DEFAULT_TEAM);
     }
 
     @Test
@@ -112,23 +116,6 @@ class DepartmentResourceIT {
 
     @Test
     @Transactional
-    void checkDepartmentNameIsRequired() throws Exception {
-        int databaseSizeBeforeTest = departmentRepository.findAll().size();
-        // set the field null
-        department.setDepartmentName(null);
-
-        // Create the Department, which fails.
-
-        restDepartmentMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(department)))
-            .andExpect(status().isBadRequest());
-
-        List<Department> departmentList = departmentRepository.findAll();
-        assertThat(departmentList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     void getAllDepartments() throws Exception {
         // Initialize the database
         departmentRepository.saveAndFlush(department);
@@ -139,7 +126,8 @@ class DepartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(department.getId().intValue())))
-            .andExpect(jsonPath("$.[*].departmentName").value(hasItem(DEFAULT_DEPARTMENT_NAME)));
+            .andExpect(jsonPath("$.[*].key").value(hasItem(DEFAULT_KEY.intValue())))
+            .andExpect(jsonPath("$.[*].team").value(hasItem(DEFAULT_TEAM)));
     }
 
     @Test
@@ -154,7 +142,8 @@ class DepartmentResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(department.getId().intValue()))
-            .andExpect(jsonPath("$.departmentName").value(DEFAULT_DEPARTMENT_NAME));
+            .andExpect(jsonPath("$.key").value(DEFAULT_KEY.intValue()))
+            .andExpect(jsonPath("$.team").value(DEFAULT_TEAM));
     }
 
     @Test
@@ -176,7 +165,7 @@ class DepartmentResourceIT {
         Department updatedDepartment = departmentRepository.findById(department.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedDepartment are not directly saved in db
         em.detach(updatedDepartment);
-        updatedDepartment.departmentName(UPDATED_DEPARTMENT_NAME);
+        updatedDepartment.key(UPDATED_KEY).team(UPDATED_TEAM);
 
         restDepartmentMockMvc
             .perform(
@@ -190,7 +179,8 @@ class DepartmentResourceIT {
         List<Department> departmentList = departmentRepository.findAll();
         assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
         Department testDepartment = departmentList.get(departmentList.size() - 1);
-        assertThat(testDepartment.getDepartmentName()).isEqualTo(UPDATED_DEPARTMENT_NAME);
+        assertThat(testDepartment.getKey()).isEqualTo(UPDATED_KEY);
+        assertThat(testDepartment.getTeam()).isEqualTo(UPDATED_TEAM);
     }
 
     @Test
@@ -261,6 +251,8 @@ class DepartmentResourceIT {
         Department partialUpdatedDepartment = new Department();
         partialUpdatedDepartment.setId(department.getId());
 
+        partialUpdatedDepartment.key(UPDATED_KEY).team(UPDATED_TEAM);
+
         restDepartmentMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, partialUpdatedDepartment.getId())
@@ -273,7 +265,8 @@ class DepartmentResourceIT {
         List<Department> departmentList = departmentRepository.findAll();
         assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
         Department testDepartment = departmentList.get(departmentList.size() - 1);
-        assertThat(testDepartment.getDepartmentName()).isEqualTo(DEFAULT_DEPARTMENT_NAME);
+        assertThat(testDepartment.getKey()).isEqualTo(UPDATED_KEY);
+        assertThat(testDepartment.getTeam()).isEqualTo(UPDATED_TEAM);
     }
 
     @Test
@@ -288,7 +281,7 @@ class DepartmentResourceIT {
         Department partialUpdatedDepartment = new Department();
         partialUpdatedDepartment.setId(department.getId());
 
-        partialUpdatedDepartment.departmentName(UPDATED_DEPARTMENT_NAME);
+        partialUpdatedDepartment.key(UPDATED_KEY).team(UPDATED_TEAM);
 
         restDepartmentMockMvc
             .perform(
@@ -302,7 +295,8 @@ class DepartmentResourceIT {
         List<Department> departmentList = departmentRepository.findAll();
         assertThat(departmentList).hasSize(databaseSizeBeforeUpdate);
         Department testDepartment = departmentList.get(departmentList.size() - 1);
-        assertThat(testDepartment.getDepartmentName()).isEqualTo(UPDATED_DEPARTMENT_NAME);
+        assertThat(testDepartment.getKey()).isEqualTo(UPDATED_KEY);
+        assertThat(testDepartment.getTeam()).isEqualTo(UPDATED_TEAM);
     }
 
     @Test

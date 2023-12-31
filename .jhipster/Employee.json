@@ -1,4 +1,7 @@
 {
+  "annotations": {
+    "changelogDate": "20231207040152"
+  },
   "applications": "*",
   "changelogDate": "20231207040152",
   "documentation": "The Employee entity.",

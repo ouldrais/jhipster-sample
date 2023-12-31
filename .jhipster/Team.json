@@ -1,0 +1,33 @@
+{
+  "annotations": {
+    "changelogDate": "20231207035652"
+  },
+  "applications": "*",
+  "entityTableName": "team",
+  "fields": [
+    {
+      "fieldName": "key",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "id",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "Team",
+  "relationships": [
+    {
+      "otherEntityName": "resource",
+      "relationshipName": "resource",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "teamPlan",
+      "relationshipName": "teamPlan",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}

@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (team) {
+      <div>
+        <h2 data-cy="teamDetailsHeading"><span jhiTranslate="jhipsterSampleApp.team.detail.title">Team</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="jhipsterSampleApp.team.key">Key</span></dt>
+          <dd>
+            <span>{{ team.key }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.team.id">Id</span></dt>
+          <dd>
+            <span>{{ team.id }}</span>
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.team.resource">Resource</span></dt>
+          <dd>
+            @if (team.resource) {
+              <div>
+                <a [routerLink]="['/resource', team.resource.id, 'view']">{{ team.resource.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="jhipsterSampleApp.team.teamPlan">Team Plan</span></dt>
+          <dd>
+            @if (team.teamPlan) {
+              <div>
+                <a [routerLink]="['/team-plan', team.teamPlan.id, 'view']">{{ team.teamPlan.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/team', team.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>

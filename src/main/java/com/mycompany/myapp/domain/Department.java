@@ -2,10 +2,7 @@ package com.mycompany.myapp.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -20,34 +17,46 @@ public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    @Column(name = "key")
+    private Long key;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "department_name", nullable = false)
-    private String departmentName;
+    @Column(name = "team")
+    private String team;
 
-    @JsonIgnoreProperties(value = { "country", "department" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "positionRequirement", "resourcePlan", "department" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(unique = true)
-    private Location location;
+    private Position position;
 
-    /**
-     * A relationship
-     */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "department")
-    @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    @JsonIgnoreProperties(value = { "jobs", "manager", "department", "jobHistory" }, allowSetters = true)
-    private Set<Employee> employees = new HashSet<>();
+    @JsonIgnoreProperties(value = { "department", "shift" }, allowSetters = true)
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(unique = true)
+    private ShiftDemand shiftDemand;
 
     @JsonIgnoreProperties(value = { "job", "department", "employee" }, allowSetters = true)
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "department")
     private JobHistory jobHistory;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
+
+    public Long getKey() {
+        return this.key;
+    }
+
+    public Department key(Long key) {
+        this.setKey(key);
+        return this;
+    }
+
+    public void setKey(Long key) {
+        this.key = key;
+    }
 
     public Long getId() {
         return this.id;
@@ -62,60 +71,42 @@ public class Department implements Serializable {
         this.id = id;
     }
 
-    public String getDepartmentName() {
-        return this.departmentName;
+    public String getTeam() {
+        return this.team;
     }
 
-    public Department departmentName(String departmentName) {
-        this.setDepartmentName(departmentName);
+    public Department team(String team) {
+        this.setTeam(team);
         return this;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setTeam(String team) {
+        this.team = team;
     }
 
-    public Location getLocation() {
-        return this.location;
+    public Position getPosition() {
+        return this.position;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
-    public Department location(Location location) {
-        this.setLocation(location);
+    public Department position(Position position) {
+        this.setPosition(position);
         return this;
     }
 
-    public Set<Employee> getEmployees() {
-        return this.employees;
+    public ShiftDemand getShiftDemand() {
+        return this.shiftDemand;
     }
 
-    public void setEmployees(Set<Employee> employees) {
-        if (this.employees != null) {
-            this.employees.forEach(i -> i.setDepartment(null));
-        }
-        if (employees != null) {
-            employees.forEach(i -> i.setDepartment(this));
-        }
-        this.employees = employees;
+    public void setShiftDemand(ShiftDemand shiftDemand) {
+        this.shiftDemand = shiftDemand;
     }
 
-    public Department employees(Set<Employee> employees) {
-        this.setEmployees(employees);
-        return this;
-    }
-
-    public Department addEmployee(Employee employee) {
-        this.employees.add(employee);
-        employee.setDepartment(this);
-        return this;
-    }
-
-    public Department removeEmployee(Employee employee) {
-        this.employees.remove(employee);
-        employee.setDepartment(null);
+    public Department shiftDemand(ShiftDemand shiftDemand) {
+        this.setShiftDemand(shiftDemand);
         return this;
     }
 
@@ -162,7 +153,8 @@ public class Department implements Serializable {
     public String toString() {
         return "Department{" +
             "id=" + getId() +
-            ", departmentName='" + getDepartmentName() + "'" +
+            ", key=" + getKey() +
+            ", team='" + getTeam() + "'" +
             "}";
     }
 }

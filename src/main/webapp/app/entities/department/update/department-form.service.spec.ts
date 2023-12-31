@@ -19,9 +19,11 @@ describe('Department Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
+            key: expect.any(Object),
             id: expect.any(Object),
-            departmentName: expect.any(Object),
-            location: expect.any(Object),
+            team: expect.any(Object),
+            position: expect.any(Object),
+            shiftDemand: expect.any(Object),
           }),
         );
       });
@@ -31,9 +33,11 @@ describe('Department Form Service', () => {
 
         expect(formGroup.controls).toEqual(
           expect.objectContaining({
+            key: expect.any(Object),
             id: expect.any(Object),
-            departmentName: expect.any(Object),
-            location: expect.any(Object),
+            team: expect.any(Object),
+            position: expect.any(Object),
+            shiftDemand: expect.any(Object),
           }),
         );
       });

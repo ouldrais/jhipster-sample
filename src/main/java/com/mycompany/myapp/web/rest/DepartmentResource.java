@@ -2,19 +2,18 @@ package com.mycompany.myapp.web.rest;
 
 import com.mycompany.myapp.domain.Department;
 import com.mycompany.myapp.repository.DepartmentRepository;
-import com.mycompany.myapp.service.DepartmentService;
 import com.mycompany.myapp.web.rest.errors.BadRequestAlertException;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.ResponseUtil;
@@ -24,6 +23,7 @@ import tech.jhipster.web.util.ResponseUtil;
  */
 @RestController
 @RequestMapping("/api/departments")
+@Transactional
 public class DepartmentResource {
 
     private final Logger log = LoggerFactory.getLogger(DepartmentResource.class);
@@ -33,12 +33,9 @@ public class DepartmentResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
-    private final DepartmentService departmentService;
-
     private final DepartmentRepository departmentRepository;
 
-    public DepartmentResource(DepartmentService departmentService, DepartmentRepository departmentRepository) {
-        this.departmentService = departmentService;
+    public DepartmentResource(DepartmentRepository departmentRepository) {
         this.departmentRepository = departmentRepository;
     }
 
@@ -50,12 +47,12 @@ public class DepartmentResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    public ResponseEntity<Department> createDepartment(@Valid @RequestBody Department department) throws URISyntaxException {
+    public ResponseEntity<Department> createDepartment(@RequestBody Department department) throws URISyntaxException {
         log.debug("REST request to save Department : {}", department);
         if (department.getId() != null) {
             throw new BadRequestAlertException("A new department cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Department result = departmentService.save(department);
+        Department result = departmentRepository.save(department);
         return ResponseEntity
             .created(new URI("/api/departments/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -75,7 +72,7 @@ public class DepartmentResource {
     @PutMapping("/{id}")
     public ResponseEntity<Department> updateDepartment(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Department department
+        @RequestBody Department department
     ) throws URISyntaxException {
         log.debug("REST request to update Department : {}, {}", id, department);
         if (department.getId() == null) {
@@ -89,7 +86,7 @@ public class DepartmentResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Department result = departmentService.update(department);
+        Department result = departmentRepository.save(department);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, department.getId().toString()))
@@ -110,7 +107,7 @@ public class DepartmentResource {
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<Department> partialUpdateDepartment(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Department department
+        @RequestBody Department department
     ) throws URISyntaxException {
         log.debug("REST request to partial update Department partially : {}, {}", id, department);
         if (department.getId() == null) {
@@ -124,7 +121,19 @@ public class DepartmentResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Department> result = departmentService.partialUpdate(department);
+        Optional<Department> result = departmentRepository
+            .findById(department.getId())
+            .map(existingDepartment -> {
+                if (department.getKey() != null) {
+                    existingDepartment.setKey(department.getKey());
+                }
+                if (department.getTeam() != null) {
+                    existingDepartment.setTeam(department.getTeam());
+                }
+
+                return existingDepartment;
+            })
+            .map(departmentRepository::save);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -139,13 +148,16 @@ public class DepartmentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of departments in body.
      */
     @GetMapping("")
-    public List<Department> getAllDepartments(@RequestParam(required = false) String filter) {
+    public List<Department> getAllDepartments(@RequestParam(name = "filter", required = false) String filter) {
         if ("jobhistory-is-null".equals(filter)) {
             log.debug("REST request to get all Departments where jobHistory is null");
-            return departmentService.findAllWhereJobHistoryIsNull();
+            return StreamSupport
+                .stream(departmentRepository.findAll().spliterator(), false)
+                .filter(department -> department.getJobHistory() == null)
+                .toList();
         }
         log.debug("REST request to get all Departments");
-        return departmentService.findAll();
+        return departmentRepository.findAll();
     }
 
     /**
@@ -155,9 +167,9 @@ public class DepartmentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the department, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Department> getDepartment(@PathVariable Long id) {
+    public ResponseEntity<Department> getDepartment(@PathVariable("id") Long id) {
         log.debug("REST request to get Department : {}", id);
-        Optional<Department> department = departmentService.findOne(id);
+        Optional<Department> department = departmentRepository.findById(id);
         return ResponseUtil.wrapOrNotFound(department);
     }
 
@@ -168,9 +180,9 @@ public class DepartmentResource {
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteDepartment(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteDepartment(@PathVariable("id") Long id) {
         log.debug("REST request to delete Department : {}", id);
-        departmentService.delete(id);
+        departmentRepository.deleteById(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
